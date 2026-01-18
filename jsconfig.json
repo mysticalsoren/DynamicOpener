@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "es2024",
+        "checkJs": true,
+        "noLib": false
+    },
+    "include": [
+        "src/*",
+        "globals.d.ts",
+        "lib/*/src/library.js"
+    ]
+}

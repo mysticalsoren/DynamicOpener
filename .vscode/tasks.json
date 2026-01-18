@@ -1,0 +1,40 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Python: Build",
+            "command": "python scripts/build.py",
+            "type": "shell",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Python: Toggle noLib",
+            "command": "python scripts/toggleNoLib.py",
+            "type": "shell"
+        },
+        {
+            "label": "Python: Download Dependencies",
+            "type": "shell",
+            "command": "python scripts/dependencies.py"
+        },
+        {
+            "label": "Python: Update all Dependencies",
+            "type": "shell",
+            "command": "python scripts/dependencies.py -u"
+        },
+        {
+            "label": "Python: Update dependencies & Build",
+            "dependsOn": [
+                "Python: Update all Dependencies",
+                "Python: Build"
+            ],
+            "type": "shell",
+            "dependsOrder": "sequence",
+            "command": "echo \"Updated and Built!\""
+        }
+    ]
+}
