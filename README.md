@@ -28,7 +28,7 @@ DynamicOpener.apply()
 ```
 where `data` is the parsed table of values from **Plot Essentials** *(which is discussed more on [Guide](#guide))*.
 
-Any changes or updates made to `data` **will not** be reflected internally. It is a shallow copy of `state["DynamicOpener"]`.
+Any changes or updates made to `data`  is reflected back internally to the `state["DynamicOpener"]`.
 
 ### Optional implementation
 In [`output`](./src/output.js):
