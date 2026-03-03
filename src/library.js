@@ -41,14 +41,18 @@ class DynamicOpener {
     }
     /**
      * Reads Plot Essentials on the start of a scenario, parsing it. Must be ran on Turn Order 0.
-     * @returns {DynamicOpenerData}
+    //  * @returns {DynamicOpenerData?} an Record<string, primitives> or null
      */
     static initialize() {
+        const turnOrder = MysticalSorenUtilities.AIDungeon.getTurnOrder()
+        if (turnOrder > this.MAX_TURN_ORDER) {
+            return null
+        }
         /**
          * @type {DynamicOpenerData}
          */
         const data = MysticalSorenUtilities.AIDungeon.getState(this.name, {})
-        if (MysticalSorenUtilities.AIDungeon.getTurnOrder() === 0) {
+        if (turnOrder === 0) {
             const referenceCallback = this.#replacementCallback(data)
             const OPERATORS = "!=<>"
 
@@ -167,7 +171,7 @@ class DynamicOpener {
             state.memory.context = state.memory.context.replaceAll(/^\s*(\w+)\s*=\s*(.+)$/gm, assignmentParser).trim()
             MysticalSorenUtilities.AIDungeon.setState(this.name, data)
         }
-        if (!MysticalSorenUtilities.hasKeys(data) && MysticalSorenUtilities.AIDungeon.getTurnOrder() <= this.MAX_TURN_ORDER) {
+        if (!MysticalSorenUtilities.hasKeys(data) && turnOrder <= this.MAX_TURN_ORDER) {
             this.#DEBUGGER.log("Empty config data!")
         }
         return data
