@@ -213,16 +213,23 @@ class DynamicOpener {
         })
     }
     /**
-     * Remakes opening with the data. Must be ran on Output and on Turn Order 0.
+     * Remakes opening with the data. Must be ran on Output with Turn Order 0 or a Retry context on Turn Order 2.
      * 
-     * If the turn order isn't 0, it will return the global text object
+     * If it doesn't meet the criteria, it will return the global text object
      * @param {string} opening The opening. Defaults to the scenario's opening.
      * @returns {string}
      */
     static remakeOpening(
         opening = MysticalSorenUtilities.AIDungeon.getRecentAction("output").text
     ) {
-        if (MysticalSorenUtilities.AIDungeon.getTurnOrder() > 0) {
+        if (typeof opening !== "string") {
+            return text
+        }
+        const turnOrder = MysticalSorenUtilities.AIDungeon.getTurnOrder()
+        if (turnOrder > 2) {
+            return text
+        }
+        if (turnOrder === 2 && !MysticalSorenUtilities.AIDungeon.isRetryTurn()) {
             return text
         }
         return MysticalSorenUtilities.toSentenceCase(opening.replaceAll(this.REGEX_REPLACEMENT, this.#replacementCallback()))
