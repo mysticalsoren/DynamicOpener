@@ -12,7 +12,7 @@ class DynamicOpener {
      * @param {string} str 
      * @returns {string}
      */
-    static #parseQutations(str) {
+    static #parseQuotations(str) {
         if (this.#MARKS.has(str.charAt(0))) {
             if (str.charAt(str.length - 1) !== str.charAt(0)) {
                 this.#DEBUGGER.log(`Couldn't parse quotations. Did you close it correctly? ${str}`)
@@ -80,10 +80,10 @@ class DynamicOpener {
                     return "InvalidOperatorError"
                 }
                 compareA = compareA.trim()
-                compareA = this.#parseQutations(compareA)
+                compareA = this.#parseQuotations(compareA)
                 compareA = MysticalSorenUtilities.escapeCharacter(compareA)
                 compareB = compareB.trim()
-                compareB = this.#parseQutations(compareB)
+                compareB = this.#parseQuotations(compareB)
                 compareB = MysticalSorenUtilities.escapeCharacter(compareB)
                 const a = MysticalSorenUtilities.convertString(
                     compareA.replaceAll(this.REGEX_REPLACEMENT, referenceCallback)
@@ -146,14 +146,14 @@ class DynamicOpener {
                     this.#DEBUGGER.log("Couldn't parse assignment. Did the given Regex make two capture groups?")
                     return ''
                 }
-                name = this.#parseQutations(name)
+                name = this.#parseQuotations(name)
                 name = MysticalSorenUtilities.escapeCharacter(name)
                 let converted = MysticalSorenUtilities.convertString(value)
                 if (typeof converted !== "string") {
                     data[name] = converted
                     return ''
                 }
-                value = this.#parseQutations(value)
+                value = this.#parseQuotations(value)
                 value = MysticalSorenUtilities.escapeCharacter(value)
                 value = value.replace(CONDITIONAL_REGEX, conditionalParser).trim()
                 converted = MysticalSorenUtilities.convertString(value)
