@@ -22,6 +22,10 @@ In either [`input`](./src/input.js) or [`context`](./src/context.js):
 ```js
 [...]
 const data = DynamicOpener.initialize()
+if (data) { // Verify data isn't null.
+    console.log(data["playerName"])
+    [...]
+}
 DynamicOpener.apply()
 // subsequent libraries
 [...]
@@ -32,11 +36,11 @@ Any changes or updates made to `data`  is reflected back internally to the `stat
 
 ```js
 const data = DynamicOpener.initialize()
-
-console.log(state["DynamicOpener"] === data) // true
-data["myNewVar"] = "newValue"
-console.log(state["DynamicOpener"] === data) // true
-
+if (data) {
+    console.log(state["DynamicOpener"] === data) // true
+    data["myNewVar"] = "newValue"
+    console.log(state["DynamicOpener"] === data) // true
+}
 DynamicOpener.apply()
 ```
 In [`output`](./src/output.js):
