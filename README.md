@@ -39,6 +39,14 @@ console.log(state["DynamicOpener"] === data) // true
 
 DynamicOpener.apply()
 ```
+In [`output`](./src/output.js):
+```js
+[...]
+// subsequent libraries
+DynamicOpener.cleanup()
+[...]
+```
+DynamicOpener will clear `state["DynamicOpener"]` after the user has taken more than two `do/say/story/continue` actions on their adventure. At this point, DynamicOpener will be dormant.
 
 ### Optional implementation
 In [`output`](./src/output.js):
@@ -46,6 +54,7 @@ In [`output`](./src/output.js):
 [...]
 text = DynamicOpener.remakeOpening()
 // subsequent libraries
+DynamicOpener.cleanup()
 [...]
 ```
 This will redo the scenario opening once on the start of a new adventure. It will **not overwrite** the preexisting one but if the opening has [reference variables](#referring-variables), it will refer to the variable's value. See below.

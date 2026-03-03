@@ -3,6 +3,7 @@ class DynamicOpener {
      * @typedef {Record<string, number | string | boolean>} DynamicOpenerData
      */
     static REGEX_REPLACEMENT = /\$(\w+)/g
+    static MAX_TURN_ORDER = 2
     static get #DEBUGGER() {
         return MysticalSorenUtilities.Debugger(this.name)
     }
@@ -166,7 +167,7 @@ class DynamicOpener {
             state.memory.context = state.memory.context.replaceAll(/^\s*(\w+)\s*=\s*(.+)$/gm, assignmentParser).trim()
             MysticalSorenUtilities.AIDungeon.setState(this.name, data)
         }
-        if (!MysticalSorenUtilities.hasKeys(data)) {
+        if (!MysticalSorenUtilities.hasKeys(data) && MysticalSorenUtilities.AIDungeon.getTurnOrder() <= this.MAX_TURN_ORDER) {
             this.#DEBUGGER.log("Empty config data!")
         }
         return data
@@ -176,6 +177,7 @@ class DynamicOpener {
      * @param {string} varName Variable name
      * @param {string | boolean | number} varValue Variable value
      * @returns {DynamicOpenerData}
+     * @deprecated use state["DynamicOpener"]["VariableName"]
      */
     static set(varName, varValue) {
         const data = MysticalSorenUtilities.AIDungeon.getState(this.name, {})
@@ -226,12 +228,20 @@ class DynamicOpener {
             return text
         }
         const turnOrder = MysticalSorenUtilities.AIDungeon.getTurnOrder()
-        if (turnOrder > 2) {
+        if (turnOrder > this.MAX_TURN_ORDER) {
             return text
         }
-        if (turnOrder === 2 && !MysticalSorenUtilities.AIDungeon.isRetryTurn()) {
+        if (turnOrder === this.MAX_TURN_ORDER && !MysticalSorenUtilities.AIDungeon.isRetryTurn()) {
             return text
         }
         return MysticalSorenUtilities.toSentenceCase(opening.replaceAll(this.REGEX_REPLACEMENT, this.#replacementCallback()))
+    }
+    /**
+     * Sets state["DynamicOpener"] to be undefined after turn order 2. Recommended to put on Output.
+     */
+    static cleanup() {
+        if (MysticalSorenUtilities.AIDungeon.getTurnOrder() > this.MAX_TURN_ORDER) {
+            MysticalSorenUtilities.AIDungeon.removeState(this.name)
+        }
     }
 }
