@@ -216,17 +216,16 @@ class DynamicOpener {
      * Remakes opening with the data. Must be ran on Output and on Turn Order 0.
      * 
      * If the turn order isn't 0, it will return the global text object
+     * @param {string} opening The opening. Defaults to the scenario's opening.
      * @returns {string}
      */
-    static remakeOpening() {
+    static remakeOpening(
+        opening = MysticalSorenUtilities.AIDungeon.getRecentAction("output").text
+    ) {
         if (MysticalSorenUtilities.AIDungeon.getTurnOrder() > 0) {
             return text
         }
-        return MysticalSorenUtilities.toSentenceCase(
-            MysticalSorenUtilities.AIDungeon.getRecentAction("output")
-                .text
-                .replaceAll(this.REGEX_REPLACEMENT, this.#replacementCallback())
-        )
+        return MysticalSorenUtilities.toSentenceCase(opening.replaceAll(this.REGEX_REPLACEMENT, this.#replacementCallback()))
     }
 
 
