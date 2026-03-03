@@ -28,7 +28,17 @@ DynamicOpener.apply()
 ```
 where `data` is the parsed table of values from **Plot Essentials** *(which is discussed more on [Guide](#guide))*.
 
-Any changes or updates made to `data`  is reflected back internally to the `state["DynamicOpener"]`.
+Any changes or updates made to `data`  is reflected back internally to the `state["DynamicOpener"]` object.
+
+```js
+const data = DynamicOpener.initialize()
+
+console.log(state["DynamicOpener"] === data) // true
+data["myNewVar"] = "newValue"
+console.log(state["DynamicOpener"] === data) // true
+
+DynamicOpener.apply()
+```
 
 ### Optional implementation
 In [`output`](./src/output.js):
@@ -38,8 +48,11 @@ text = DynamicOpener.remakeOpening()
 // subsequent libraries
 [...]
 ```
-This will redo the opening once on the start of a new adventure. It will **not overwrite** the preexisting one but if the opening has [reference variables](#referring-variables), it will refer to the variable's value. See below.
-![Screenshot of a Scenario Opening.](./assets/image.png)
+This will redo the scenario opening once on the start of a new adventure. It will **not overwrite** the preexisting one but if the opening has [reference variables](#referring-variables), it will refer to the variable's value. See below.
+![Screenshot of a Scenario Opening.](./assets/opening.png)
+
+Text example if image isn't working
+
 ```
 # Scenario Creator > Opening
 You are ${name} and you live with your roommate, $friendName. $friendPronoun is currently at $friendPronoun2 desk, working on Heart&Roses.
@@ -53,6 +66,29 @@ You are Soren and you live with your roommate, $friendName. $friendPronoun is cu
 
 You are Soren and you live with your roommate, Chloe. She is currently at her desk, working on Heart&Roses.
 ```
+
+You can override how DynamicOpener gets the scenario opening by entering a string into its arguments.
+```js
+text = DynamicOpener.remakeOpening(`You are $playerName and you live with your roommate, $friendName. $friendPronoun is currently at $friendPronoun2 desk, working on Heart&Roses.`)
+```
+![Screenshot of Scenario Opening, starting with "Begin."](./assets/openingScript.png)
+
+Text example if image isn't working
+
+```
+# Scenario Creator > Opening
+Begin.
+
+# Adventure
+Begin.
+
+============ [remakeOpening() is ran] ============
+
+Begin.
+
+You are Soren and you live with your roommate, Chloe. She is currently at her desk, working on Heart&Roses.
+```
+Since it is done in scripting, user prompts will not work unless assigned to a [reference variable](#referring-variables).
 
 # Guide
 ### Defining a variable:
