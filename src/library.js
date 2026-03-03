@@ -24,11 +24,12 @@ class DynamicOpener {
     }
     /**
      * An String.replace wrapper function that refers to the current data found on global state
+     * @param {DynamicOpenerData} data The data to refer to 
      * @returns {(match: string, key: string) => (string)}
      */
-    static #replacementCallback() {
-        this.#DEBUGGER.log(this.name)
-        const data = MysticalSorenUtilities.AIDungeon.getState(this.name, {})
+    static #replacementCallback(
+        data = MysticalSorenUtilities.AIDungeon.getState(this.name, {})
+    ) {
         return (match, key) => {
             if (data[key] === undefined) {
                 this.#DEBUGGER.log(`Couldn't replace ${match}. There isn't a key-pair to replace it with.`)
@@ -47,7 +48,7 @@ class DynamicOpener {
          */
         const data = MysticalSorenUtilities.AIDungeon.getState(this.name, {})
         if (MysticalSorenUtilities.AIDungeon.getTurnOrder() === 0) {
-            const referenceCallback = this.#replacementCallback()
+            const referenceCallback = this.#replacementCallback(data)
             const OPERATORS = "!=<>"
 
             const CONDITIONAL_REGEX = new RegExp(
