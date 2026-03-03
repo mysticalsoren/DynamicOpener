@@ -227,6 +227,4 @@ class DynamicOpener {
         }
         return MysticalSorenUtilities.toSentenceCase(opening.replaceAll(this.REGEX_REPLACEMENT, this.#replacementCallback()))
     }
-
-
 }
