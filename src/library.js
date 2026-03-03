@@ -173,19 +173,6 @@ class DynamicOpener {
         return data
     }
     /**
-     * Sets a variable into the config state.
-     * @param {string} varName Variable name
-     * @param {string | boolean | number} varValue Variable value
-     * @returns {DynamicOpenerData}
-     * @deprecated use state["DynamicOpener"]["VariableName"]
-     */
-    static set(varName, varValue) {
-        const data = MysticalSorenUtilities.AIDungeon.getState(this.name, {})
-        data[varName] = varValue
-        MysticalSorenUtilities.AIDungeon.setState(this.name, data)
-        return data
-    }
-    /**
      * Updates Plot Essentials, Author's Note, and StoryCards. Must be ran on Turn Order 0.
      * @returns {void}
      */
