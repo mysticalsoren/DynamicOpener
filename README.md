@@ -14,9 +14,6 @@ This aims to solve the use of "they", "their" in scenario openings when genders 
 \* See [Optional implementation](#optional-implementation)
 <hr>
 
-
-A note before getting started, I haven't tested this with a ongoing adventure so errors may occur.
-
 # Implementation
 In either [`input`](./src/input.js) or [`context`](./src/context.js):
 ```js
