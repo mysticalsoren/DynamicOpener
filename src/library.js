@@ -57,7 +57,7 @@ class DynamicOpener {
         const data = MysticalSorenUtilities.AIDungeon.getState(this.name, {})
         if (turnOrder === 0) {
             const referenceCallback = this.#replacementCallback(data)
-            const OPERATORS = "!=<>*"
+            const OPERATORS = "!=<>*~"
             const OPS_VERIFY_REGEX = new RegExp(`[^${OPERATORS}]`)
 
             const CONDITIONAL_REGEX = new RegExp(
@@ -126,6 +126,20 @@ class DynamicOpener {
                         return tValue
                     }
                 }
+                if (compareOp === "*=" || compareOp === "=*") {
+                    if (typeA !== "string" && typeB !== "string") {
+                        this.#DEBUGGER.log(`Couldn't do contains operation. A and B are types, "${typeA}" and "${typeB}", respectively. Must be string types.`)
+                        return fValue
+                    }
+                    return a.includes(b) ? tValue : fValue
+                }
+                if (compareOp === "~=" || compareOp === "=~") {
+                    if (typeA !== "string" && typeB !== "string") {
+                        this.#DEBUGGER.log(`Couldn't do case-insensitive operation. A and B are types, "${typeA}" and "${typeB}", respectively. Must be string types.`)
+                        return fValue
+                    }
+                    return a.toLowerCase() === b.toLowerCase() ? tValue : fValue
+                }
                 if (
                     (compareOp === "!=" || compareOp === "=!") &&
                     a !== b
@@ -140,13 +154,6 @@ class DynamicOpener {
                     ) &&
                     a === b) {
                     return tValue
-                }
-                if (compareOp === "*=" || compareOp === "=*") {
-                    if (typeA !== "string" && typeB !== "string") {
-                        this.#DEBUGGER.log(`Couldn't do contains operation. A and B are types, "${typeA}" and "${typeB}", respectively. Must be string types.`)
-                        return fValue
-                    }
-                    return a.includes(b) ? tValue : fValue
                 }
                 return fValue
             }

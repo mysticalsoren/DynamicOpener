@@ -115,8 +115,9 @@ If you like to assign a conditional assignment:
 
 `condition1` is a string of characters *(if any)*, not including `!=<>`
 
-`comparison operator` is one of `!=`, `==`, `<=`, `>=`, `<`, `>`, `!<`, `!>`, `*=`
+`comparison operator` is one of `!=`, `==`, `<=`, `>=`, `<`, `>`, `!<`, `!>`, `*=`, `~=`
 * `*=` Contains the word..?
+* `~=` Case-insensitive equality
 
 `condition2` is a string of characters *(if any)*, not including `?`
 
@@ -170,7 +171,7 @@ Notes:
 
 Modifies on `data` to provides a set of keys that relies on gender. Must provide a predefined key **containing the word, gender, with its values being 'male' or 'female'** respectively.
 
-See [implementation](./src/library.js#L294) for a list of incorporated keys.
+See [implementation](./src/library.js#L301) for a list of incorporated keys.
 
 ```javascript
 data["plrGender"] = "male"
