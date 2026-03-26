@@ -58,6 +58,7 @@ class DynamicOpener {
         if (turnOrder === 0) {
             const referenceCallback = this.#replacementCallback(data)
             const OPERATORS = "!=<>"
+            const OPS_VERIFY_REGEX = new RegExp(`[^${OPERATORS}]`)
 
             const CONDITIONAL_REGEX = new RegExp(
                 `\\s*([^${OPERATORS}]*)([${OPERATORS}]{1,2})\\s*([^?]*)\\?\\s*([^:]*):(.*)`
@@ -83,7 +84,7 @@ class DynamicOpener {
                     this.#DEBUGGER.log("Couldn't parse conditional. Did the given Regex make five capture groups?")
                     return "InsufficientCaptureGroupError"
                 }
-                if (compareOp.length !== 2 || compareOp.match(/[^!=<>]/)) {
+                if (compareOp.length !== 2 || compareOp.match(OPS_VERIFY_REGEX)) {
                     this.#DEBUGGER.log(`Couldn't parse conditional. The second capture group must capture one or two characters of "!=<>". Got "${compareOp}"`)
                     return "InvalidOperatorError"
                 }
