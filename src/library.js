@@ -312,14 +312,15 @@ class DynamicOpener {
                 AddItem("husband", "husband", "wife")
                 // #endregion
 
-                // #region Fanasty
+                // #region Fantasy
                 AddItem("prince", "prince", "princess")
                 AddItem("butler", "butler", "maid")
                 AddItem("hero", "hero", "heroine")
-                AddItem("villian", "villian", "villianess")
+                AddItem("villain", "villain", "villainess")
                 AddItem("king", "king", "queen")
                 AddItem("duke", "duke", "duchess")
                 AddItem("lord", "lord", "lady")
+                AddItem("demon", "demon", "demoness")
                 // #endregion
 
                 // #region Eastern
