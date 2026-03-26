@@ -239,4 +239,91 @@ class DynamicOpener {
             MysticalSorenUtilities.AIDungeon.removeState(this.name)
         }
     }
+    /**
+     * An utility class containing useful functions
+     */
+    static Extra = {
+        /**
+         * Mutates on `data` to provide a set of keys that is based on gender. Follows the format, "\<prefix\>\<genderWord\>".
+         * 
+         * By convention, `genderWord` will always be the masculine form of the word.
+         * 
+         * Also, it provides the capitalized form. Just capitalize the first letter.
+         * 
+         * **Requires a predefined key containing the word 'gender' to work.**
+         * 
+         * Example:
+         * ```
+         * data["plrGender"] = "male"
+         * console.log(data["plrhe"]) // he
+         * console.log(data["plrhimself"]) // himself
+         *
+         *  data["plrGender"] = "female"
+         *  console.log(data["plrhe"]) // she
+         *  console.log(data["plrhimself"]) // herself
+         * ```
+         */
+        genderKeys() {
+            const data = MysticalSorenUtilities.AIDungeon.getState(DynamicOpener.name, {})
+            Object.keys(data).forEach((key) => {
+                const idx = key.toLowerCase().indexOf("gender")
+                if (idx < 0) {
+                    return
+                }
+                const prefix = key.substring(0, idx)
+                data[key] = data[key].toString().toLowerCase()
+                /**
+                 * @param {string} suffix the suffix key
+                 * @param {string} mV maleValue
+                 * @param {string} fV femaleValue
+                 */
+                const AddItem = (suffix, mV, fV) => {
+                    data[`${prefix}${suffix}`] = data[key] === "male" ? mV : fV
+                    data[`${prefix}${MysticalSorenUtilities.toSentenceCase(suffix)}`] = data[key] === "male" ? MysticalSorenUtilities.toSentenceCase(mV) : MysticalSorenUtilities.toSentenceCase(fV)
+                }
+                // #endregion
+
+                // #region (Pro)nouns
+                AddItem("his", "his", "her")
+                AddItem("himself", "himself", "herself")
+                AddItem("him", "him", "her")
+                AddItem("he", "he", "she")
+                AddItem("bro", "brother", "sister")
+                AddItem("uncle", "uncle", "aunt")
+                AddItem("dad", "dad", "mom")
+                AddItem("daddy", "daddy", "mommy")
+                AddItem("father", "father", "mother")
+                AddItem("papa", "papa", "mama")
+                AddItem("pa", "pa", "ma")
+                AddItem("mister", "mister", "miss")
+                AddItem("mr", "Mr.", "Ms.")
+                AddItem("boy", "boy", "girl")
+                AddItem("man", "man", "woman")
+                AddItem("men", "men", "women")
+                AddItem("bf", "boyfriend", "girlfriend")
+                AddItem("boyfriend", "boyfriend", "girlfriend")
+                AddItem("husband", "husband", "wife")
+                // #endregion
+
+                // #region Fanasty
+                AddItem("prince", "prince", "princess")
+                AddItem("butler", "butler", "maid")
+                AddItem("hero", "hero", "heroine")
+                AddItem("villian", "villian", "villianess")
+                AddItem("king", "king", "queen")
+                AddItem("duke", "duke", "duchess")
+                AddItem("lord", "lord", "lady")
+                // #endregion
+
+                // #region Eastern
+                AddItem("swordsman", "swordsman", "swordswoman")
+                AddItem("shinobi", "shinobi", "kunoichi")
+                // #endregion
+
+                // #region Titles
+                AddItem("minister", "minister", "ministress")
+                // #endregion
+            })
+        }
+    }
 }

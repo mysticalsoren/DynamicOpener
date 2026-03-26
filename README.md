@@ -113,15 +113,15 @@ If you like to assign a conditional assignment:
 
     {condition1} {comparison operator} {condition2} ? {trueValue} : {falseValue}
 
-`condition1` is a string of characters, not including `!=<>`
+`condition1` is a string of characters *(if any)*, not including `!=<>`
 
 `comparison operator` is one of `!=`, `==`, `<=`, `>=`, `<`, `>`
 
-`condition2` is a string of characters, not including `?`
+`condition2` is a string of characters *(if any)*, not including `?`
 
-`trueValue` is any string of characters, not including `:`
+`trueValue` is any string of characters *(if any)*, not including `:`
 
-`falseValue` is any string of characters
+`falseValue` is any string of characters *(if any)*
 
 `condition1`, `condition2`, `trueValue`, and `falseValue` can be a [reference variable](#referring-variables) or a user prompt.
 
@@ -162,3 +162,26 @@ Notes:
 
 * Capitalization of `He`, *(internally, its `he`)*. DynamicOpener will automatically capitalize letters at the beginning of sentences.
 * Variables are gone but not entirely. You can access them via scripting through `state["DynamicOpener"]`
+
+# Extra Utility Functions
+### DynamicOpener.Extra.genderKeys()
+    DynamicOpener.Extra.genderKeys()
+
+Modifies on `data` to provides a set of keys that relies on gender. Must provide a predefined key **containing the word, gender, with its values being 'male' or 'female'** respectively.
+
+See [implementation](./src/library.js#L286) for a list of incorporated keys.
+
+```javascript
+data["plrGender"] = "male"
+console.log(data["plrhe"]) // he
+console.log(data["plrHe"]) // He (capitalized form)
+console.log(data["plrhimself"]) // himself
+console.log(data["plrHimself"]) // Himself (capitalized form)
+
+data["plrGender"] = "female"
+console.log(data["plrhe"]) // she
+console.log(data["plrHe"]) // She (capitalized form)
+console.log(data["plrhimself"]) // herself
+console.log(data["plrHimself"]) // Herself (capitalized form)
+```
+Naturally, `DynamicOpener` will autocapitalize by default. Use the capitalized  form to enforce capitalization.
