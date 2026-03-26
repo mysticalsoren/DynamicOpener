@@ -140,6 +140,13 @@ class DynamicOpener {
                     }
                     return a.toLowerCase() === b.toLowerCase() ? tValue : fValue
                 }
+                if (compareOp === "~*" || compareOp === "*~") {
+                    if (typeA !== "string" && typeB !== "string") {
+                        this.#DEBUGGER.log(`Couldn't do case-insensitive contains operation. A and B are types, "${typeA}" and "${typeB}", respectively. Must be string types.`)
+                        return fValue
+                    }
+                    return a.toLowerCase().includes(b.toLowerCase()) ? tValue : fValue
+                }
                 if (
                     (compareOp === "!=" || compareOp === "=!") &&
                     a !== b
