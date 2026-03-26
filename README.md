@@ -113,7 +113,7 @@ If you like to assign a conditional assignment:
 
     {condition1} {comparison operator} {condition2} ? {trueValue} : {falseValue}
 
-`condition1` is a string of characters *(if any)*, not including `!=<>`
+`condition1` is a string of characters *(if any)*, not including `!=<>*~`
 
 `comparison operator` is one of `!=`, `==`, `<=`, `>=`, `<`, `>`, `!<`, `!>`, `*=`, `~=`, `~*`
 * `*=` Contains the word..?
