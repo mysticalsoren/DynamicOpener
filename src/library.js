@@ -19,6 +19,9 @@ class DynamicOpener {
                 this.#DEBUGGER.log(`Couldn't parse quotations. Did you close it correctly? ${str}`)
                 return str
             }
+            if (str.length === 2) {
+                return ""
+            }
             return str.substring(1, str.length - 2)
         }
         return str
@@ -57,7 +60,7 @@ class DynamicOpener {
             const OPERATORS = "!=<>"
 
             const CONDITIONAL_REGEX = new RegExp(
-                `\\s*([^${OPERATORS}]+)([${OPERATORS}]{1,2})\\s*([^?]+)\\?\\s*([^:]+):(.+)`
+                `\\s*([^${OPERATORS}]*)([${OPERATORS}]{1,2})\\s*([^?]*)\\?\\s*([^:]*):(.*)`
             )
             /**
              * 
