@@ -191,3 +191,16 @@ console.log(data["plrhimself"]) // herself
 console.log(data["plrHimself"]) // Herself (capitalized form)
 ```
 Naturally, `DynamicOpener` will autocapitalize by default. Use the capitalized  form to enforce capitalization.
+# Compiling & Updating
+> Requires [Python](https://www.python.org/downloads) and [Git](https://git-scm.com) to be installed on your system.
+
+Clone the repository and make sure your terminal's current working directory is in the **root** of the repository before ***running any scripts***.
+
+Run:
+```sh
+git pull
+python scripts/dependencies.py -u
+python scripts/build.py
+```
+
+There should be a generated `lib` folder and `out` folder. Your compiled files are in the `out` directory.
