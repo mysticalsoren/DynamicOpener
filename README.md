@@ -1,4 +1,7 @@
 # DynamicOpener
+> \> [library.js](./out/library.js)
+
+
 A dynamic scenario loader that **runs once** the very start of a new adventure.
 
 This aims to solve the use of "they", "their" in scenario openings when genders are up to the user. This ambiguity is left to the AI even if the user has stated explicitly of the character's gender, so with a little bit of ***conditionals***, hopefully, it'll lessen the maintenance for the user.
@@ -15,7 +18,7 @@ This aims to solve the use of "they", "their" in scenario openings when genders 
 <hr>
 
 # Implementation
-In either [`input`](./src/input.js) or [`context`](./src/context.js):
+In either [`input`](./out/input.js) or [`context`](./out/context.js):
 ```js
 [...]
 const data = DynamicOpener.initialize()
@@ -40,7 +43,7 @@ if (data) {
 }
 DynamicOpener.apply()
 ```
-In [`output`](./src/output.js):
+In [`output`](./out/output.js):
 ```js
 [...]
 // subsequent libraries
@@ -50,7 +53,7 @@ DynamicOpener.cleanup()
 DynamicOpener will clear `state["DynamicOpener"]` after the user has taken more than two `do/say/story/continue` actions on their adventure. At this point, DynamicOpener will be dormant.
 
 ### Optional implementation
-In [`output`](./src/output.js):
+In [`output`](./out/output.js):
 ```js
 [...]
 text = DynamicOpener.remakeOpening()
