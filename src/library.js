@@ -85,7 +85,7 @@ class DynamicOpener {
                     return "InsufficientCaptureGroupError"
                 }
                 if (compareOp.length !== 2 || compareOp.match(OPS_VERIFY_REGEX)) {
-                    this.#DEBUGGER.log(`Couldn't parse conditional. The second capture group must capture one or two characters of "!=<>". Got "${compareOp}"`)
+                    this.#DEBUGGER.log(`Couldn't parse conditional. The second capture group must capture one or two characters of ${OPERATORS}". Got "${compareOp}"`)
                     return "InvalidOperatorError"
                 }
                 compareA = compareA.trim()
