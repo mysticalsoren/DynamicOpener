@@ -84,7 +84,7 @@ class DynamicOpener {
                     this.#DEBUGGER.log("Couldn't parse conditional. Did the given Regex make five capture groups?")
                     return "InsufficientCaptureGroupError"
                 }
-                if (compareOp.length !== 2 || compareOp.match(OPS_VERIFY_REGEX)) {
+                if (compareOp.length < 1 || compareOp.length > 2 || compareOp.match(OPS_VERIFY_REGEX)) {
                     this.#DEBUGGER.log(`Couldn't parse conditional. The second capture group must capture one or two characters of ${OPERATORS}". Got "${compareOp}"`)
                     return "InvalidOperatorError"
                 }
