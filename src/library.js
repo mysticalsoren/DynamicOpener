@@ -61,7 +61,7 @@ class DynamicOpener {
             const OPS_VERIFY_REGEX = new RegExp(`[^${OPERATORS}]`)
 
             const CONDITIONAL_REGEX = new RegExp(
-                `\\s*([^${OPERATORS}]*)([${OPERATORS}]{1,2})\\s*([^?]*)\\?\\s*([^:]*):(.*)`
+                `\\s*([^${OPERATORS}]*)([${OPERATORS}]{1,2})\\s*([^?]*)\\?\\s*([^:]*):\s*(.*)`
             )
             /**
              * 
