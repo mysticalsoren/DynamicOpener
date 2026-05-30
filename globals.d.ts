@@ -38,6 +38,12 @@ declare global {
     }],
     const storyCards: [StoryCard]
     const state: {
+        placeholders: [
+            {
+                question: string,
+                answer: string
+            }
+        ]
         memory: {
             /**
              * @description Also known as Plot Essentials
