@@ -32,6 +32,7 @@ class DynamicOpener {
      * @returns {(match: string, key: string) => (string)}
      */
     static #replacementCallback(
+        // @ts-ignore
         data = MysticalSorenUtilities.AIDungeon.getState(this.name, {})
     ) {
         return (match, key) => {
@@ -56,7 +57,6 @@ class DynamicOpener {
          */
         const data = MysticalSorenUtilities.AIDungeon.getState(this.name, {})
         if (turnOrder === 0) {
-            const referenceCallback = this.#replacementCallback(data)
             const OPERATORS = "!=<>*~"
             const OPS_VERIFY_REGEX = new RegExp(`[^${OPERATORS}]`)
 
@@ -95,10 +95,10 @@ class DynamicOpener {
                 compareB = this.#parseQuotations(compareB)
                 compareB = MysticalSorenUtilities.escapeCharacter(compareB)
                 const a = MysticalSorenUtilities.convertString(
-                    compareA.replaceAll(this.REGEX_REPLACEMENT, referenceCallback)
+                    compareA.replaceAll(this.REGEX_REPLACEMENT, this.#replacementCallback(data))
                 )
                 const b = MysticalSorenUtilities.convertString(
-                    compareB.replaceAll(this.REGEX_REPLACEMENT, referenceCallback)
+                    compareB.replaceAll(this.REGEX_REPLACEMENT, this.#replacementCallback(data))
                 )
                 const typeA = typeof a
                 const typeB = typeof b
@@ -188,7 +188,7 @@ class DynamicOpener {
                 value = value.replace(CONDITIONAL_REGEX, conditionalParser).trim()
                 converted = MysticalSorenUtilities.convertString(value)
                 if (typeof converted === "string") {
-                    converted = converted.replaceAll(this.REGEX_REPLACEMENT, referenceCallback)
+                    converted = converted.replaceAll(this.REGEX_REPLACEMENT, this.#replacementCallback(data))
                 }
                 data[name] = converted
                 return ''
@@ -210,18 +210,19 @@ class DynamicOpener {
             // this.DEBUGGER.log("Can only be run on Turn Order 0.")
             return
         }
-        const callback = this.#replacementCallback()
         /**
          * @param {string} str 
          * @returns {string}
          */
         const format = (str) => {
             return MysticalSorenUtilities.toSentenceCase(
-                str.replaceAll(this.REGEX_REPLACEMENT, callback)
+                str.replaceAll(this.REGEX_REPLACEMENT, this.#replacementCallback())
             )
         }
         state.memory.context = format(state.memory.context)
-        state.memory.authorsNote = format(state.memory.authorsNote)
+        if (state.memory.authorsNote) {
+            state.memory.authorsNote = format(state.memory.authorsNote)
+        }
         storyCards.forEach((card) => {
             card.title = format(card.title)
             card.type = format(card.type)
@@ -234,11 +235,11 @@ class DynamicOpener {
      * Remakes opening with the data. Must be ran on Output with Turn Order 0 or a Retry context on Turn Order 2.
      * 
      * If it doesn't meet the criteria, it will return the global text object
-     * @param {string} opening The opening. Defaults to the scenario's opening.
+     * @param {string | undefined} opening The opening. Defaults to the scenario's opening.
      * @returns {string}
      */
     static remakeOpening(
-        opening = MysticalSorenUtilities.AIDungeon.getRecentAction("output").text
+        opening = MysticalSorenUtilities.AIDungeon.getRecentAction("output")?.text
     ) {
         if (typeof opening !== "string") {
             return text
@@ -299,7 +300,9 @@ class DynamicOpener {
                  * @param {string} fV femaleValue
                  */
                 const AddItem = (suffix, mV, fV) => {
+                    // @ts-ignore
                     data[`${prefix}${suffix}`] = data[key] === "male" ? mV : fV
+                    // @ts-ignore
                     data[`${prefix}${MysticalSorenUtilities.toSentenceCase(suffix)}`] = data[key] === "male" ? MysticalSorenUtilities.toSentenceCase(mV) : MysticalSorenUtilities.toSentenceCase(fV)
                 }
                 // #endregion
