@@ -194,6 +194,7 @@ class DynamicOpener {
                 return ''
             }
             state.memory.context = state.memory.context.replaceAll(/^\s*(\w+)\s*=\s*(.+)$/gm, assignmentParser).trim()
+            state.memory.context = state.memory.context.replaceAll(/\n{3}/g, "")
             MysticalSorenUtilities.AIDungeon.setState(this.name, data)
         }
         if (!MysticalSorenUtilities.hasKeys(data) && turnOrder <= this.MAX_TURN_ORDER) {
