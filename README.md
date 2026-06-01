@@ -80,7 +80,9 @@ You are Soren and you live with your roommate, $friendName. $friendPronoun is cu
 You are Soren and you live with your roommate, Chloe. She is currently at her desk, working on Heart&Roses.
 ```
 
-You can override how DynamicOpener gets the scenario opening by entering a string into its arguments.
+You can override how DynamicOpener gets the scenario opening by [entering a string into its arguments](#opening-scripting) or [doing it inside your Plot Essentials](#opening-plot-essentials).
+<h4 id=opening-scripting>Opening by Scripting</h4>
+
 ```js
 text = DynamicOpener.remakeOpening(`You are $playerName and you live with your roommate, $friendName. $friendPronoun is currently at $friendPronoun2 desk, working on Heart&Roses.`)
 ```
@@ -102,6 +104,28 @@ Begin.
 You are Soren and you live with your roommate, Chloe. She is currently at her desk, working on Heart&Roses.
 ```
 Since it is done in scripting, user prompts will not work unless assigned to a [reference variable](#referring-variables).
+<h4 id=opening-plot-essentials>Opening by Plot Essentials</h4>
+
+In your **Plot Essentials**:
+
+```
+Relevant World Infomation...
+
+# opening
+You are ${name} and you live with your roommate, $friendName. $friendPronoun is currently at $friendPronoun2 desk, working on Heart&Roses.
+# opening
+
+Some more world information...
+```
+Once the scenario is created, it will remove the opening section.
+
+*Plot Essentials*
+```
+Relevant World Infomation...
+
+Some more world information...
+```
+
 
 # Guide
 ### Defining a variable:
@@ -171,7 +195,15 @@ Notes:
 
 # Extra Utility Functions
 ### DynamicOpener.Extra.genderKeys()
-    DynamicOpener.Extra.genderKeys()
+
+In `context.js`
+```
+...
+DynamicOpener.initialize()
+DynamicOpener.Extra.genderKeys()
+DynamicOpener.apply()
+...
+```
 
 Modifies on `data` to provides a set of keys that relies on gender. Must provide a predefined key **containing the word, gender, with its values being 'male' or 'female'** respectively.
 

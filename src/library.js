@@ -183,6 +183,13 @@ class DynamicOpener {
                     data[name] = converted
                     return ''
                 }
+                if (name.toLowerCase() === "opening") {
+                    this.#DEBUGGER.log(`\
+                        Cannot assign variable, "opening" or its alternative capitalization, \
+                        as it is a reserved keyword that DynamicOpener uses.\
+                    `)
+                    return ''
+                }
                 value = this.#parseQuotations(value)
                 value = MysticalSorenUtilities.escapeCharacter(value)
                 value = value.replace(CONDITIONAL_REGEX, conditionalParser).trim()
@@ -193,6 +200,10 @@ class DynamicOpener {
                 data[name] = converted
                 return ''
             }
+            state.memory.context = state.memory.context.replaceAll(/#\s*opening\n+\s*([^\r\t\f\v]+?)\n+\s*#\s*opening/g, (match, opening) => {
+                data["opening"] = data["opening"] || opening
+                return ''
+            })
             state.memory.context = state.memory.context.replaceAll(/^\s*(\w+)\s*=\s*(.+)$/gm, assignmentParser).trim()
             state.memory.context = state.memory.context.replaceAll(/\n{3}/g, "")
             MysticalSorenUtilities.AIDungeon.setState(this.name, data)
@@ -236,7 +247,9 @@ class DynamicOpener {
      * Remakes opening with the data. Must be ran on Output with Turn Order 0 or a Retry context on Turn Order 2.
      * 
      * If it doesn't meet the criteria, it will return the global text object
-     * @param {string | undefined} opening The opening. Defaults to the scenario's opening.
+     * 
+     * Opening priority: **[Plot Essentials] #opening > remakeOpening("...") > defaultScenarioOpening**
+     * @param {string | undefined} opening The opening. Defaults to the scenario's opening. If data["opening"] is a string value then it overrides everything.
      * @returns {string}
      */
     static remakeOpening(
@@ -244,6 +257,12 @@ class DynamicOpener {
     ) {
         if (typeof opening !== "string") {
             return text
+        }
+        const data = MysticalSorenUtilities.AIDungeon.getState(this.name, {})
+        // @ts-ignore
+        if (typeof data["opening"] === "string") {
+            // @ts-ignore
+            opening = data["opening"]
         }
         const turnOrder = MysticalSorenUtilities.AIDungeon.getTurnOrder()
         if (turnOrder > this.MAX_TURN_ORDER) {
@@ -294,6 +313,7 @@ class DynamicOpener {
                     return
                 }
                 const prefix = key.substring(0, idx)
+                    // @ts-ignore
                 data[key] = data[key].toString().toLowerCase()
                 /**
                  * @param {string} suffix the suffix key
@@ -350,6 +370,7 @@ class DynamicOpener {
                 AddItem("minister", "minister", "ministress")
                 // #endregion
             })
+            MysticalSorenUtilities.AIDungeon.setState(DynamicOpener.name,data)
         }
     }
 }
