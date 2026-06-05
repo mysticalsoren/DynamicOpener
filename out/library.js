@@ -229,7 +229,7 @@ class DynamicOpener {
                 data[name] = converted
                 return ''
             }
-            state.memory.context = state.memory.context.replaceAll(/#\s*opening\n+\s*([^\r\t\f\v]+?)\n+\s*#\s*opening\s*/g, (match, opening) => {
+            state.memory.context = state.memory.context.replaceAll(/#\s*opening\n+\s*([^\r\t\f\v]+?)\n+\s*#\s*opening/g, (match, opening) => {
                 data["opening"] = data["opening"] || opening
                 return ''
             })
@@ -701,7 +701,7 @@ class DynamicOpener {
      * @returns {Object}
      */
     getState(stateName, alternative = {}) {
-      alternative = !MysticalSorenUtilities.isPlainObject(alternative) ? alternative : {}
+      alternative = MysticalSorenUtilities.isPlainObject(alternative) ? alternative : {}
       if (typeof stateName !== "string") {
         MysticalSorenUtilities.#Private.Debugger.log(`\
           Couldn't get state. The name isn't type of "string", found "${typeof stateName}. Returning with alternative..."\
@@ -738,7 +738,7 @@ class DynamicOpener {
   }
   /**
    * Checks if the given Object is a basic Object.
-   * @param {Object} obj The given Object
+   * @param {any} obj The given Object
    * @returns {boolean}
    */
   static isPlainObject(obj) {
@@ -746,7 +746,7 @@ class DynamicOpener {
   }
   /**
    * Checks if the given Object is a basic Object and isn't empty.
-   * @param {Object} obj the given Object
+   * @param {any} obj the given Object
    * @returns {boolean}
    */
   static hasKeys(obj) {
