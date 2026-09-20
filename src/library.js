@@ -57,7 +57,7 @@ class DynamicOpener {
          */
         const data = MysticalSorenUtilities.AIDungeon.getState(this.name, {})
         if (turnOrder === 0) {
-            const OPERATORS = "!=<>*~"
+            const OPERATORS = "!=<>*~%"
             const OPS_VERIFY_REGEX = new RegExp(`[^${OPERATORS}]`)
 
             const CONDITIONAL_REGEX = new RegExp(
@@ -102,6 +102,96 @@ class DynamicOpener {
                 )
                 const typeA = typeof a
                 const typeB = typeof b
+                if (compareOp.includes('%')) {
+                    if (typeB !== "string") {
+                        this.#DEBUGGER.log(`Couldn't do switch operation, the right operation must be of a "string" type, not "${typeB}"`)
+                        return fValue
+                    }
+                    const cmpOp = compareOp.match(/^[%]/)?.[0].charAt(0) || ''
+                    if (cmpOp === '') {
+                        this.#DEBUGGER.log(`Couldn't do switch operation, you must specify the second compare operation like '%=' or '%<'`)
+                        return fValue
+                    }
+                    /** @type {Array<string>} */
+                    // @ts-ignore
+                    let conditions = b.split(',')
+                    if (conditions.length === 0) {
+                        this.#DEBUGGER.log(`Couldn't do switch operation, the right operation \
+                        does not have any commas as a delimiter between conditions.\
+                        `)
+                        return fValue
+                    }
+                    let trues = tValue.split(',')
+                    if (trues.length === 0) {
+                        this.#DEBUGGER.log(`Couldn't do switch operation, the true return values does not \
+                            have any commas as a delimiter between values.\
+                            `)
+                        return fValue
+                    }
+                    for (let i = 0; i < conditions.length; i++) {
+                        const _b = MysticalSorenUtilities.convertString(
+                            conditions[i].replaceAll(this.REGEX_REPLACEMENT, this.#replacementCallback(data))
+                        )
+                        const _b_type = typeof b
+                        if (cmpOp === '=') {
+                            if (a === _b) {
+                                return trues[i]
+                            }
+                        }
+                        if (cmpOp === '<') {
+                            if (typeA !== "number" || _b_type !== "number") {
+                                this.#DEBUGGER.log(`Couldn't do switch statement. \
+                                    typeA (${typeA}) and typeB (${typeB}) must be both numbers \
+                                    when doing lesser than operation!)\
+                                `)
+                                return fValue
+                            }
+                            if (a < _b) {
+                                return trues[i]
+                            }
+                        }
+                        if (cmpOp === '>') {
+                            if (typeA !== "number" || _b_type !== "number") {
+                                this.#DEBUGGER.log(`Couldn't do switch statement. \
+                                    typeA (${typeA}) and typeB (${typeB}) must be both numbers \
+                                    when doing greater than operation!)\
+                                `)
+                                return fValue
+                            }
+                            if (a > _b) {
+                                return trues[i]
+                            }
+                        }
+                        if (cmpOp === '*') {
+                            if (typeA !== "string" || _b_type !== "string") {
+                                this.#DEBUGGER.log(`Couldn't do switch statement. \
+                                    typeA (${typeA}) and typeB (${typeB}) must be both strings \
+                                    when doing contains operation!)\
+                                `)
+                                return fValue
+                            }
+                            //@ts-ignore
+                            if (a.includes(_b)) {
+                                return trues[i]
+                            }
+                        }
+                        if (cmpOp === '~') {
+                            if (typeA !== "string" || _b_type !== "string") {
+                                this.#DEBUGGER.log(`Couldn't do switch statement. \
+                                    typeA (${typeA}) and typeB (${typeB}) must be both strings \
+                                    when doing case-insensitive operation!)\
+                                `)
+                                return fValue
+                            }
+                            //@ts-ignore
+                            if (a.toLowerCase() === _b.toLowerCase()) {
+                                return trues[i]
+                            }
+                        }
+                        
+                    }
+                    return fValue
+                }
                 if (compareOp.includes('<')) {
                     if (typeA !== "number" && typeB !== "number") {
                         this.#DEBUGGER.log(`Couldn't parse conditional. Cannot use '<' on A and B when types are "${typeA}" and "${typeB}", respectively.`)
