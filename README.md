@@ -142,10 +142,16 @@ If you like to assign a conditional assignment:
 
 `condition1` is a string of characters *(if any)*, not including `!=<>*~`
 
-`comparison operator` is one of `!=`, `==`, `<=`, `>=`, `<`, `>`, `!<`, `!>`, `*=`, `~=`, `~*`
+`comparison operator` is one of `!=`, `==`, `<=`, `>=`, `<`, `>`, `!<`, `!>`, `*=`, `~=`, `~*`, `%=`, `%<`, `%>`, `%~`, `%*`
 * `*=` Contains the word..?
 * `~=` Case-insensitive equality
 * `~*` Contains the word..? (case-insensitive)
+* `%` Works like Javascript Switch-Case-Break-Default statement.
+  * the second operator is used for comparison, `%=` for equality, `%*` for contains the word...
+  * `condition2` is treated like an **ordered list** of conditions separated by commas [`,`]
+  * `trueValue` is treated like a ordered list of **corresponding true values** depending on the given `condition2`'s current index.
+  * `falseValue` is the default value if all conditions fail.
+  * Example: `choiceOfFruit` `%=` `apple,pineapple,orange` `?` `apple juice,pineapple juice,orange juice` `:` `you hate fruits!`
 
 `condition2` is a string of characters *(if any)*, not including `?`
 
