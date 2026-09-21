@@ -128,6 +128,13 @@ class DynamicOpener {
                             `)
                         return fValue
                     }
+                    if (conditions.length !== trues.length) {
+                        this.#DEBUGGER.log(`Couldn't do switch operation, mismatch number of conditions to their corresponding true values. \
+                            There are ${conditions.length} conditions and ${trues.length} true values!\
+                            `
+                        )
+                        return fValue
+                    }
                     for (let i = 0; i < conditions.length; i++) {
                         const _b = MysticalSorenUtilities.convertString(
                             conditions[i].replaceAll(this.REGEX_REPLACEMENT, this.#replacementCallback(data))
