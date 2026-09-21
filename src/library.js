@@ -107,7 +107,7 @@ class DynamicOpener {
                         this.#DEBUGGER.log(`Couldn't do switch operation, the right operation must be of a "string" type, not "${typeB}"`)
                         return fValue
                     }
-                    const cmpOp = compareOp.match(/^[%]/)?.[0].charAt(0) || ''
+                    const cmpOp = compareOp.match(/[^%]/)?.[0].charAt(0) || ''
                     if (cmpOp === '') {
                         this.#DEBUGGER.log(`Couldn't do switch operation, you must specify the second compare operation like '%=' or '%<'`)
                         return fValue
