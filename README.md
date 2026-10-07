@@ -213,7 +213,7 @@ DynamicOpener.apply()
 
 Modifies on `data` to provides a set of keys that relies on gender. Must provide a predefined key **containing the word, gender, with its values being 'male' or 'female'** respectively.
 
-See [implementation](./src/library.js#L308) for a list of incorporated keys.
+See [implementation](./src/library.js#L428) for a list of incorporated keys.
 
 ```javascript
 data["plrGender"] = "male"
@@ -229,6 +229,17 @@ console.log(data["plrhimself"]) // herself
 console.log(data["plrHimself"]) // Herself (capitalized form)
 ```
 Naturally, `DynamicOpener` will autocapitalize by default. Use the capitalized  form to enforce capitalization.
+### DynamicOpener.Extra.nameKeys()
+In `content.js`
+```
+...
+DynamicOpener.initialize()
+DynamicOpener.Extra.nameKeys()
+DynamicOpener.apply()
+...
+```
+
+Like [genderKeys()](#dynamicopenerextragenderkeys), it modifies on `data` to provide a set of keys for `FirstName`, `MiddleName`, and `LastName`. Must provide a predefined key **containing the word, name**.
 # Compiling & Updating
 > Requires [Python](https://www.python.org/downloads) and [Git](https://git-scm.com) to be installed on your system.
 
