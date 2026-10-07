@@ -432,6 +432,8 @@ class DynamicOpener {
          * ```
          */
         genderKeys() {
+            /** @type {Record<string,string>} */   
+            // @ts-ignore
             const data = MysticalSorenUtilities.AIDungeon.getState(DynamicOpener.name, {})
             Object.keys(data).forEach((key) => {
                 const idx = key.toLowerCase().indexOf("gender")
@@ -439,7 +441,6 @@ class DynamicOpener {
                     return
                 }
                 const prefix = key.substring(0, idx)
-                    // @ts-ignore
                 data[key] = data[key].toString().toLowerCase()
                 /**
                  * @param {string} suffix the suffix key
@@ -447,9 +448,7 @@ class DynamicOpener {
                  * @param {string} fV femaleValue
                  */
                 const AddItem = (suffix, mV, fV) => {
-                    // @ts-ignore
                     data[`${prefix}${suffix}`] = data[key] === "male" ? mV : fV
-                    // @ts-ignore
                     data[`${prefix}${MysticalSorenUtilities.toSentenceCase(suffix)}`] = data[key] === "male" ? MysticalSorenUtilities.toSentenceCase(mV) : MysticalSorenUtilities.toSentenceCase(fV)
                 }
                 // #endregion
@@ -497,6 +496,56 @@ class DynamicOpener {
                 // #endregion
             })
             MysticalSorenUtilities.AIDungeon.setState(DynamicOpener.name,data)
+        },
+        /**
+         * Mutates on 'data' to add keys for FirstName, MiddleName, and LastName.
+         * 
+         * Example:
+         * ```
+         * data["plrName"] = "Billy Joe Baker"
+         * console.log(data[plrFirstName]) // Billy
+         * console.log(data[plrMiddleName]) // Joe
+         * console.log(data[plrLastName]) // Baker
+         * 
+         * data["plrName"] = "Billy Baker"
+         * console.log(data[plrFirstName]) // Billy
+         * console.log(data[plrMiddleName]) // null
+         * console.log(data[plrLastName]) // Baker
+         * 
+         * data["plrName"] = "Billy"
+         * console.log(data[plrFirstName]) // Billy
+         * console.log(data[plrMiddleName]) // null
+         * console.log(data[plrLastName]) // null
+         * ```
+         */
+        nameKeys() {
+            /** @type {Record<string,string>} */
+            // @ts-ignore
+            const data = MysticalSorenUtilities.AIDungeon.getState(DynamicOpener.name, {})
+            Object.keys(data).forEach((key) => {
+                const idx = key.toLowerCase().indexOf("name")
+                if (idx < 0) {
+                    return
+                }
+                const prefix = key.substring(0, idx)
+                const contents = data[key].split(' ', 3)
+                if (contents.length < 1) {
+                    data[`${prefix}FirstName`] = data[key]
+                    DynamicOpener.#DEBUGGER.log(`
+                        No space was found when generating nameKeys. \
+                        FirstName is set to "${data[key]}"\
+                        `)
+                    return
+                }
+                data[`${prefix}FirstName`] = contents[0]
+                if (contents.length === 3) {
+                    data[`${prefix}MiddleName`] = contents[1]
+                }
+                if (contents.length > 1) {
+                    data[`${prefix}LastName`] = contents[contents.length-1]
+                }
+            })
+            MysticalSorenUtilities.AIDungeon.setState(DynamicOpener.name, data)
         }
     }
 }
