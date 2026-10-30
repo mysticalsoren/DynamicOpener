@@ -473,6 +473,7 @@ class DynamicOpener {
                 AddItem("bf", "boyfriend", "girlfriend")
                 AddItem("boyfriend", "boyfriend", "girlfriend")
                 AddItem("husband", "husband", "wife")
+                AddItem("son", "son", "daughter")
                 // #endregion
 
                 // #region Fantasy
@@ -493,6 +494,16 @@ class DynamicOpener {
 
                 // #region Titles
                 AddItem("minister", "minister", "ministress")
+                // #endregion
+                // #region Adjectives
+                AddItem("boyish","boyish","girlish")
+                AddItem("girly","boyish","girly")
+                AddItem("manly","manly","womanly")
+                AddItem("masculine","masculine","feminine")
+                AddItem("brotherly","brotherly","sisterly")
+                AddItem("fatherly","fatherly","motherly")
+                AddItem("paternal","paternal","maternal")
+                AddItem("fraternal","fraternal","maternal")
                 // #endregion
             })
             MysticalSorenUtilities.AIDungeon.setState(DynamicOpener.name,data)
