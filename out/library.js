@@ -326,8 +326,11 @@ class DynamicOpener {
                 data[name] = converted
                 return ''
             }
-            state.memory.context = state.memory.context.replaceAll(/#\s*opening\n+\s*([^\r\t\f\v]+?)\n+\s*#\s*opening/g, (match, opening) => {
-                data["opening"] = data["opening"] || opening
+            state.memory.context = state.memory.context.replaceAll(/#\s*(\w+)\n+\s*([^\r\t\f\v]+?)\n+\s*#\s*(\w+)/g, (match, h1, content, h2) => {
+                if (h1 !== h2) {
+                    return ''
+                }
+                data[h1] = data[h1] || content
                 return ''
             })
             state.memory.context = state.memory.context.replaceAll(/^\s*(\w+)\s*=\s*(.+)$/gm, assignmentParser).trim()
