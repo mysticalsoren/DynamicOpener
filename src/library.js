@@ -525,7 +525,7 @@ class DynamicOpener {
          * ```
          */
         nameKeys() {
-            /** @type {Record<string,string>} */
+            /** @type {Record<string,string?>} */
             // @ts-ignore
             const data = MysticalSorenUtilities.AIDungeon.getState(DynamicOpener.name, {})
             Object.keys(data).forEach((key) => {
@@ -545,9 +545,10 @@ class DynamicOpener {
                 }
                 data[`${prefix}FirstName`] = contents[0]
                 if (contents.length === 3) {
-                    data[`${prefix}MiddleName`] = contents[1]
-                }
-                if (contents.length > 1) {
+                    const isNobiliaryParticle = contents[1].toLowerCase() === contents[1]
+                    data[`${prefix}MiddleName`] = isNobiliaryParticle ? null : contents[1]
+                    data[`${prefix}LastName`] = isNobiliaryParticle ? `${contents[1]} ${contents[2]}` : contents[2]
+                } else {
                     data[`${prefix}LastName`] = contents[contents.length-1]
                 }
             })
